@@ -1,0 +1,49 @@
+# depslib dependency file v1.0
+1534637945 source:c:\users\jeffz\desktop\project\2d_historgram\helpers.cpp
+	<vector>
+	<iostream>
+	<cmath>
+	<string>
+	<fstream>
+
+1534637984 source:c:\users\jeffz\desktop\project\2d_historgram\localizer.cpp
+	"helpers.cpp"
+	<stdlib.h>
+	"debugging_helpers.cpp"
+
+1534637945 c:\users\jeffz\desktop\project\2d_historgram\helpers.cpp
+	<vector>
+	<iostream>
+	<cmath>
+	<string>
+	<fstream>
+
+1534638502 c:\users\jeffz\desktop\project\2d_historgram\debugging_helpers.cpp
+	<vector>
+	<iostream>
+
+1534638045 source:c:\users\jeffz\desktop\project\2d_historgram\simulate.cpp
+	"localizer.cpp"
+	<algorithm>
+
+1534637984 c:\users\jeffz\desktop\project\2d_historgram\localizer.cpp
+	"helpers.cpp"
+	<stdlib.h>
+	"debugging_helpers.cpp"
+
+1534638352 source:c:\users\jeffz\desktop\project\2d_historgram\tests.cpp
+	<iostream>
+	"simulate.cpp"
+
+1534638045 c:\users\jeffz\desktop\project\2d_historgram\simulate.cpp
+	"localizer.cpp"
+	<algorithm>
+
+1534649982 source:c:\users\jeffz\desktop\project\2d_historgram\debugging_helpers.cpp
+	<vector>
+	<iostream>
+	"debugging_helpers.h"
+
+1534650013 c:\users\jeffz\desktop\project\2d_historgram\debugging_helpers.h
+	<vector>
+
