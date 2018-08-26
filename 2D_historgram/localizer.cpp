@@ -11,9 +11,12 @@
 	for working implementations which are written in python.
 */
 
-#include "helpers.cpp"
-#include "debugging_helpers.cpp"
-#include "localizer.h"
+#include <iostream>
+#include <cmath>
+#include <string>
+#include "../include/helpers.h"
+#include "../include/debugging_helpers.h"
+#include "../include/localizer.h"
 #include <stdlib.h>
 
 using namespace std;
@@ -42,9 +45,18 @@ using namespace std;
 vector< vector <float> > initialize_beliefs(vector< vector <char> > grid) {
 	vector< vector <float> > newGrid;
 
-	// your code here
+    int num_rows = grid.size();
+	int num_cols = grid[0].size();
 
-	return newGrid;
+    newGrid = zeros(num_rows, num_cols);
+
+    for(int i = 0; i < num_rows; i++){
+        for(int j = 0; j < num_cols; j++){
+                newGrid[i][j] = 1.0;
+        }
+    }
+
+	return normalize(newGrid);
 }
 
 /**
@@ -92,7 +104,21 @@ vector< vector <float> > sense(char color,
 {
 	vector< vector <float> > newGrid;
 
-	// your code here
+    int num_rows = grid.size();
+	int num_cols = grid[0].size();
+
+    newGrid = zeros(num_rows, num_cols);
+
+    for(int i = 0; i < num_rows; i++){
+        for(int j = 0; j < num_cols; j++){
+            if(color == grid[i][j]){
+                newGrid[i][j] = beliefs[i][j]*p_hit;
+            }
+            else{
+                newGrid[i][j] = beliefs[i][j]*p_miss;
+            }
+        }
+    }
 
 	return normalize(newGrid);
 }
@@ -142,7 +168,42 @@ vector< vector <float> > move(int dy, int dx,
 
 	vector < vector <float> > newGrid;
 
-	// your code here
+    int num_rows = beliefs.size();
+	int num_cols = beliefs[0].size();
+	int curr_row;
+	int curr_col;
+
+    newGrid = zeros(num_rows, num_cols);
+
+    for(int row = 0; row < num_rows; row++){
+        for(int col = 0; col < num_cols; col++){
+
+            // to fix overflow for circular world for rows, add num_rows to start everything positive
+            curr_row = (row+dx)%num_rows;
+            // to fix overflow for circular world for cols, add num_cols to start everything positive
+            curr_col = (col+dy)%num_cols;
+
+            // post offect newGrid take values from original belief grid
+            newGrid[curr_row][curr_col] = beliefs[row][col];
+        }
+    }
 
 	return blur(newGrid, blurring);
 }
+
+/*int main() {
+    vector < vector < char > > map = read_map("maps/m1.txt");
+    show_grid(map);
+
+    vector < vector < float > > grid = zeros(3, 4);
+    grid[2][3] = 1.0;
+    grid[1][2] = 1.0;
+    cout << "original grid" << endl;
+    show_grid(grid);
+    vector < vector < float > > new_grid = blur(grid, 0.12);
+    cout << "new grid" << endl;
+    show_grid(new_grid);
+    vector < vector < float > > norm_distr_grid = initialize_beliefs(map);
+    show_grid(norm_distr_grid);
+    return 0;
+}*/
