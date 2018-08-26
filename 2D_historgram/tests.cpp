@@ -1,6 +1,8 @@
 #include <iostream>
-#include "simulate.h"
-#include "tests.h"
+#include "../include/tests.h"
+#include "../include/helpers.h"
+#include "../include/debugging_helpers.h"
+#include "../include/localizer.h"
 
 bool test_normalize() {
 	vector < vector <float> > unnormalized, normalized, result;
@@ -262,6 +264,7 @@ bool test_localizer() {
 		correct = false;
 	}
 
+
 	cout << endl;
 
 	question_correct = test_sense();
@@ -277,8 +280,8 @@ bool test_localizer() {
 
 int main() {
 	cout << endl;
-	//test_helpers();
-	//test_localizer();
+	test_helpers();
+	test_localizer();
 	cout << endl;
 	return 0;
 }
