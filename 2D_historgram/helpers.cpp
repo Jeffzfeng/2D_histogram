@@ -15,7 +15,8 @@
 #include <cmath>
 #include <string>
 #include <fstream>
-#include "debugging_helpers.h"
+#include "../include/debugging_helpers.h"
+#include "../include/helpers.h"
 
 using namespace std;
 
@@ -34,8 +35,30 @@ using namespace std;
 vector< vector<float> > normalize(vector< vector <float> > grid) {
 
 	vector< vector<float> > newGrid;
+    vector< vector<float> >::const_iterator grid_row;
+    vector<float>::const_iterator grid_col;
 
-	// todo - your code here
+    float total_prob = 0.0;
+
+    // find total sum first
+	for(grid_row = grid.begin(); grid_row!= grid.end(); grid_row++){
+        for(grid_col = grid_row->begin(); grid_col != grid_row->end(); grid_col++){
+            total_prob += *grid_col;
+        }
+	}
+
+	int num_rows = grid.size();
+	int num_cols = grid[0].size();
+
+    // initialize new grid with zeros function
+	newGrid = zeros(num_rows, num_cols);
+
+    // populate new grid with normalized values
+    for(int i = 0; i < num_rows; i++){
+        for(int j = 0; j < num_cols; j++){
+            newGrid[i][j] = grid[i][j]/total_prob;
+        }
+	}
 
 	return newGrid;
 }
@@ -77,7 +100,38 @@ vector < vector <float> > blur(vector < vector < float> > grid, float blurring) 
 
 	vector < vector <float> > newGrid;
 
-	// your code here
+	int num_rows = grid.size();
+	int num_cols = grid[0].size();
+    float blur_spill = blurring/12.0;
+    int curr_row;
+    int curr_col;
+
+    newGrid = zeros(num_rows, num_cols);
+
+    for(int row = 0; row < num_rows; row++){
+        for(int col = 0; col < num_cols; col++){
+            if(grid[row][col] > 0){
+                for(int i = 0; i < 3; i++){
+                    for(int j = 0; j < 3; j++){
+                        // to fix overflow for circular world for rows, add num_rows to start everything positive
+                        curr_row = (num_rows+row+i-1)%num_rows;
+                        // to fix overflow for circular world for cols, add num_cols to start everything positive
+                        curr_col = (num_cols+col+j-1)%num_cols;
+                        // apply blurring to surronding cells
+                        if(i == 1 && j == 1){
+                            newGrid[curr_row][curr_col] = grid[curr_row][curr_col] - blurring;
+                        }
+                        else if(i == 1 || j == 1){
+                            newGrid[curr_row][curr_col] = grid[curr_row][curr_col] + blur_spill*2;
+                        }
+                        else{
+                            newGrid[curr_row][curr_col] = grid[curr_row][curr_col] + blur_spill;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	return normalize(newGrid);
 }
@@ -214,9 +268,19 @@ vector < vector <float> > zeros(int height, int width) {
 	}
 	return newGrid;
 }
-
+/*
 int main() {
     vector < vector < char > > map = read_map("maps/m1.txt");
     show_grid(map);
+
+    vector < vector < float > > grid = zeros(3, 4);
+    grid[2][3] = 1.0;
+    grid[1][2] = 1.0;
+    cout << "original grid" << endl;
+    show_grid(grid);
+    vector < vector < float > > new_grid = blur(grid, 0.12);
+    cout << "new grid" << endl;
+    show_grid(new_grid);
     return 0;
 }
+*/
