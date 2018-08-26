@@ -1,6 +1,0 @@
-#ifndef SIMULATE_H_INCLUDED
-#define SIMULATE_H_INCLUDED
-
-
-
-#endif // SIMULATE_H_INCLUDED
