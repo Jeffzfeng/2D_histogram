@@ -7,7 +7,7 @@
 
 #include <vector>
 #include <iostream>
-#include "debugging_helpers.h"
+#include "../include/debugging_helpers.h"
 
 using namespace std;
 
